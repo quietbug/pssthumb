@@ -195,9 +195,9 @@ int main( int argc, const char** argv )
 			unsigned short swap = (raw>>8) | (raw<<8);
 			// compdata_for_channel[ch][i] = ucomb16(&buf[i+offset]);
 			compdata_for_channel[ch][i] = swap;
+#ifdef DEBUG
 			unsigned char a = buf[i+offset];
 			unsigned char b = buf[i+offset+1];
-#ifdef DEBUG
 			fprintf(stderr, "i: %04u/%u: read %03hu bytes\t", i, rle_channel_length, compdata_for_channel[ch][i]);
 			fprintf(stderr, "%02hhx %02hhx ", a, b);
 			fprintf(stderr, "\n");
@@ -300,8 +300,8 @@ int main( int argc, const char** argv )
 
 	// Check if number of decoded pixels in channels diverge
 	if (out_channel_len[0] != out_channel_len[1] || out_channel_len[1] != out_channel_len[2] || out_channel_len[0] != out_channel_len [2]) {
-		unsigned int real_len = res_w * res_h;
 #ifdef DEBUG
+		unsigned int real_len = res_w * res_h;
 		fprintf(stderr, "%s%d\t%d\t%d%s\n", RED, out_channel_len[0], out_channel_len[1], out_channel_len[2], CRESET);
 		fprintf(stderr, "Real: %d, calculated: %d\n", real_len * 3, out_channel_len[0] + out_channel_len[1] + out_channel_len[2] );
 #endif
