@@ -16,7 +16,7 @@
 #define RED "\033[0;31m"
 #define CRESET "\033[0m"
 // debug flags
-#define DEBUG
+#undef DEBUG
 #undef DEBUG_VERBOSE
 
 // Channel container
@@ -182,7 +182,12 @@ int main( int argc, const char** argv )
 		fprintf(stderr, "Allocating %d bytes\n", rle_channel_length);
 #endif 
 		compdata_for_channel[ch] = malloc(rle_channel_length * sizeof(int));
-		// todo: handle OOM
+		// handle out of memory
+		if (!compdata_for_channel[ch]) {
+			fprintf(stderr, "Memory allocation failed while decompressing channel %d\n", ch); 
+			exit(1); 
+		}
+
 		for (unsigned int i = 0; i < rle_channel_length; i+=2) {
 			// running on rle i
 			char * ptr = &buf[i+offset];
